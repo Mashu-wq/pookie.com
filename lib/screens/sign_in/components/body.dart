@@ -3,6 +3,7 @@
 import 'package:commercial/components/social_card.dart';
 import 'package:commercial/constants.dart';
 import 'package:commercial/screens/sign_in/components/sign_form.dart';
+import 'package:commercial/screens/sign_up/sign_up_register_screen.dart';
 import 'package:commercial/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -54,11 +55,17 @@ class Body extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: getProportionateScreenWidth(10)),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(16),
-                      color: kPrimaryColor,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, SignUpRegisterScreen.routeName);
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(16),
+                        color: kPrimaryColor,
+                      ),
                     ),
                   ),
                 ],

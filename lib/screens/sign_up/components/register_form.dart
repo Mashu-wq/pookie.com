@@ -1,31 +1,32 @@
 import 'package:commercial/components/default_button.dart';
 import 'package:commercial/components/form_error.dart';
 import 'package:commercial/constants.dart';
-import 'package:commercial/screens/forgot_password/forgot_password_screen.dart';
-import 'package:commercial/screens/login_success/login_success_screen.dart';
+import 'package:commercial/screens/complete_page/complete_page_screen.dart';
 import 'package:commercial/screens/sign_in/components/custom_suffix_icon.dart';
 import 'package:commercial/size_config.dart';
 import 'package:flutter/material.dart';
 
-class SignForm extends StatefulWidget {
-  const SignForm({super.key});
+class RegisterFrom extends StatefulWidget {
+  const RegisterFrom({super.key});
 
   @override
-  State<SignForm> createState() => _SignFormState();
+  State<RegisterFrom> createState() => _RegisterFromState();
 }
 
-class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
-  final List<String> errors = [];
-  bool remember = false;
+class _RegisterFromState extends State<RegisterFrom> {
   @override
   Widget build(BuildContext context) {
+    String? confirm_password;
+    String email;
+    final List<String> errors = [];
+    String? password;
+    final _formKey = GlobalKey<FormState>();
+
     return Form(
         key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
+        child: SingleChildScrollView(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(
             children: [
               TextFormField(
@@ -83,6 +84,7 @@ class _SignFormState extends State<SignForm> {
                       errors.remove(kShortPassError);
                     });
                   }
+                  password = value;
                   //return null;
                 },
                 validator: (value) {
@@ -110,48 +112,51 @@ class _SignFormState extends State<SignForm> {
               SizedBox(
                 height: getProportionateScreenHeight(20),
               ),
-              SizedBox(
-                height: getProportionateScreenHeight(30),
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                    value: remember,
-                    activeColor: kPrimaryColor,
-                    onChanged: (value) {
-                      setState(() {
-                        remember = value!;
-                      });
-                    },
+              TextFormField(
+                obscureText: true,
+                onSaved: (newValue) => confirm_password = newValue!,
+                onChanged: (value) {
+                  if (password == confirm_password) {
+                    setState(() {
+                      errors.remove(kMatchPassError);
+                    });
+                  }
+                  //return null;
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    // setState(() {
+                    //   errors.add(kPassNullError);
+                    // });
+                    // return "";
+                  } else if (password != confirm_password) {
+                    setState(() {
+                      errors.add(kMatchPassError);
+                    });
+                    // return "";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: "Confirm Password",
+                  hintText: "Re-enter your password",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  suffixIcon: customSuffixIcon(
+                    icon: Icons.lock_outline,
                   ),
-                  const Text("Remember me"),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, ForgotPasswordScreen.routeName);
-                    },
-                    child: const Text(
-                      "Forgot Password",
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: getProportionateScreenHeight(20),
+                ),
               ),
               FormError(errors: errors),
               SizedBox(
-                height: getProportionateScreenHeight(20),
+                height: getProportionateScreenHeight(40),
               ),
               DefaultButton(
                 text: "Continue",
                 press: () {
                   if (_formKey.currentState!.validate()) {
-                    _formKey.currentState?.save();
-                    //if all are valid then go to success screen
-                    Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                    //go to complete profile page
+                    Navigator.pushNamed(
+                        context, CompleteProfileScreen.routeName);
                   }
                 },
               ),
