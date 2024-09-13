@@ -1,6 +1,7 @@
 import 'package:commercial/components/default_button.dart';
 import 'package:commercial/components/form_error.dart';
 import 'package:commercial/constants.dart';
+import 'package:commercial/screens/otp/otp_screen.dart';
 import 'package:commercial/screens/sign_in/components/custom_suffix_icon.dart';
 import 'package:commercial/size_config.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +157,7 @@ class _CompleteProfileFromState extends State<CompleteProfileFrom> {
               text: "Continue",
               press: () {
                 if (_formKey.currentState!.validate()) {
-                  //go to OTP screen
+                  Navigator.pushNamed(context, OtpScreen.routeName);
                 }
               },
             ),
